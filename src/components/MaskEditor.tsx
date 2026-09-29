@@ -23,6 +23,7 @@ interface MaskEditorProps {
   maskCanvas: HTMLCanvasElement
   onProcess: () => void
   onBack: () => void
+  onCrop?: (croppedImage: HTMLImageElement, croppedMask?: HTMLCanvasElement) => void
 }
 
 /** 在 ctx 上重放一筆（圓形筆刷 + 線段間補圓避免斷線） */
