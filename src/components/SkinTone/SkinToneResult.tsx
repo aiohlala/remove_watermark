@@ -3,14 +3,21 @@ import { useEffect, useRef, useState } from 'react'
 interface SkinToneResultProps {
   image: HTMLImageElement
   resultCanvas: HTMLCanvasElement
+  fileName?: string
   onContinueEditing: () => void
   onReset: () => void
 }
 
 /** 前 / 後對比檢視：拖曳中間滑桿比較原圖與膚色調和後的成果 */
+function getBaseName(fileName?: string): string {
+  if (!fileName) return 'image'
+  return fileName.replace(/\.[^/.]+$/, '') || 'image'
+}
+
 export default function SkinToneResult({
   image,
   resultCanvas,
+  fileName,
   onContinueEditing,
   onReset,
 }: SkinToneResultProps) {
@@ -65,7 +72,8 @@ export default function SkinToneResult({
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = 'skin-tone-harmonized.png'
+      const base = getBaseName(fileName)
+      a.download = `${base}_st.png`
       a.click()
       URL.revokeObjectURL(url)
     }, 'image/png')
@@ -114,7 +122,7 @@ export default function SkinToneResult({
           繼續微調
         </button>
         <button type="button" className="primary skin-primary-btn" onClick={downloadPng}>
-          下載高清 PNG
+          下載成果圖片 (PNG)
         </button>
       </div>
     </div>

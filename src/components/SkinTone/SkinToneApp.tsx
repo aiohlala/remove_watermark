@@ -12,13 +12,15 @@ type Status = 'empty' | 'editing' | 'processing' | 'done'
 
 export default function SkinToneApp() {
   const [status, setStatus] = useState<Status>('empty')
+  const [fileName, setFileName] = useState('image')
   const [image, setImage] = useState<HTMLImageElement | null>(null)
   const [resultCanvas, setResultCanvas] = useState<HTMLCanvasElement | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [maskCanvas, setMaskCanvas] = useState<HTMLCanvasElement | null>(null)
   const processingRef = useRef(false)
 
-  const handleImageLoaded = useCallback((img: HTMLImageElement) => {
+  const handleImageLoaded = useCallback((img: HTMLImageElement, name?: string) => {
+    setFileName(name || 'image')
     const mask = document.createElement('canvas')
     mask.width = img.naturalWidth
     mask.height = img.naturalHeight
@@ -116,6 +118,7 @@ export default function SkinToneApp() {
         <SkinToneResult
           image={image}
           resultCanvas={resultCanvas}
+          fileName={fileName}
           onContinueEditing={() => setStatus('editing')}
           onReset={handleReset}
         />
